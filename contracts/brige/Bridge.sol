@@ -48,10 +48,12 @@ contract Bridge {
     uint8 v,
     bytes32 r,
     bytes32 s
-  ) external onlyOwner {
+  ) external {
     bytes32 signedDataHash = keccak256(
       abi.encodePacked(to, amount, nonce, timestamp)
     );
+    // надо сделать мапу и по message => true/false
+    // redeem должен вызываться самим пользователем, чтобы БЭК ничего не платил.
     bytes32 message = signedDataHash.toEthSignedMessageHash();
     address signer = message.recover(v, r, s);
     require(to == signer, "wrong signature");
